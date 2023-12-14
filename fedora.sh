@@ -18,8 +18,8 @@ sudo dnf install google-chrome-stable gnome-tweaks nvidia-driver pycharm-communi
 flatpak install com.mattjakeman.ExtensionManager it.mijorus.gearlever com.raggesilver.BlackBox # configurações
 flatpak install de.haeckerfelix.Fragments com.github.tenderowl.frog com.github.finefindus.eyedropper # utilitários
 flatpak install com.Spotify.Client io.bassi.Amberol com.obsproject.Studio # mídia
-flatpak install io.gitlab.idevecore.Pomodoro com.todoist.Todoist # produtividade
-flatpak install org.ferdium.Ferdium io.github.mimbrero.WhatsAppDesktop org.telegram.desktop com.protonvpn.www  # internet
+flatpak install com.todoist.Todoist org.gnome.Evolution # produtividade
+flatpak install org.ferdium.Ferdium io.github.mimbrero.WhatsAppDesktop com.vivaldi.Vivaldi com.protonvpn.www  # internet
 flatpak install io.podman_desktop.PodmanDesktop org.gnome.Builder # desenvolvimento
 
 # customizaçao basica dos temas
