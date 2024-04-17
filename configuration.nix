@@ -42,20 +42,24 @@
     LC_TIME = "pt_BR.UTF-8";
   };
 
-  # Enable the X11 windowing system, removing XTerm.
+  # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.excludePackages = [ pkgs.xterm ];
-  hardware.nvidia.modesetting.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  # Enable the GNOME Desktop Environment, without the apps.
+  hardware.nvidia.prime.sync.enable = true;
+  hardware.nvidia.modesetting.enable = true;
+  
+  hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
+  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+
+  virtualisation.docker.enableNvidia = true;
+
+  # Enable the Gnome Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.windowManager.qtile.enable = true;
   services.gnome.core-utilities.enable = false;
-  environment.gnome.excludePackages = [
-   pkgs.gnome-tour
-  ];
+  environment.gnome.excludePackages = [ pkgs.gnome-tour ];
 
   # Configure keymap in X11
   services.xserver = {
@@ -92,114 +96,110 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.patrickg = {
     isNormalUser = true;
-    description = "Patrick Gnosis";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      vlc
-      tilix
-      virtualbox
-      gnome.eog
-      gnome.cheese
-
-      gnomeExtensions.dash-to-panel
-      gnomeExtensions.arcmenu
-     
-    ];
-  };
-  
-    users.users.pgirardi = {
-    isNormalUser = true;
     description = "Patrick Girardi";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-      kitty
-      neovim
-      vscode       
-      zathura
-      cava
-      gnome.gnome-boxes
-      mpv
-      ranger
-      cmus
-      feh
-      neofetch
-      gnome.gnome-disk-utility
+      anytype
+      ticktick
+      floorp # alternative web browser
 
-      gnomeExtensions.dash-to-dock
-      gnomeExtensions.logo-menu
-      gnomeExtensions.vitals
-      gnomeExtensions.pop-shell
-
+      android-studio
+      github-desktop
+    	
       nerdfonts
-
+      cavalier # audio visualizer
+      
+      gnomeExtensions.material-shell # material shell
+      gnomeExtensions.blur-my-shell # blur effects
+      gnomeExtensions.coverflow-alt-tab # beautiful alt+tab
+      gnomeExtensions.burn-my-windows # windows animations
+      gnomeExtensions.desktop-cube # desktop effects
+      gnomeExtensions.rounded-window-corners
+      
+      bibata-cursors-translucent
     ];
-
   };
-
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile.
-  environment.systemPackages = with pkgs; [
-     vim 
-     wget
-     git
-     firefox
-     google-chrome
-     gnome.gnome-tweaks
-     gnome.nautilus
-     nautilus-open-any-terminal
-     gnome.file-roller
-     gnome.gnome-font-viewer
-     deluge-gtk
-     gnome.gnome-calculator
-     obsidian
-     htop
-     audacity
-     libsForQt5.kdenlive
-     krita
-     handbrake
-     obs-studio
-     onlyoffice-bin
-     gnome.gnome-chess    
-     gnuchess
-     spotify
-     gnome-frog
-     gnote
-     gnome.gnome-system-monitor
-     whatsapp-for-linux
- 
-     gnomeExtensions.pano
-     gnomeExtensions.lock-keys
-     gnomeExtensions.custom-hot-corners-extended
-     gnomeExtensions.caffeine
-     gnomeExtensions.awesome-tiles
-     gnomeExtensions.tray-icons-reloaded
-     gnomeExtensions.gsconnect
-     
-     sassc
-     gtk-engine-murrine
-     gnome.gnome-themes-extra
-     bibata-cursors-translucent
-     adw-gtk3
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+    environment.systemPackages = with pkgs; [
+    git # versionating
+    wget # download things
+    wine # windows tools
+    bottles # manage wine
+    docker # manage containers
+    pciutils # config pci devices
+    protonvpn-gui # free vpn
+    
+    vlc # media player
+    vscode # versatile IDE
+    virtualbox # virtualization tool
+    brave # web-browser
+    fragments # torrents
+    gnome-frog # OCR tool
+    onlyoffice-bin # office
+    whatsapp-for-linux # whatsapp client
+    
+    spotify # music streaming
+    stremio # video streaming hub
+    foliate # e-book reader
+    
+    audacity # audio editor
+    kdenlive # video editor
+    krita # painting tool
+    obs-studio # screen recording
+    handbrake # video compressing
+    noisetorch # mic noise reduction
+    easyeffects # audio equalizer
+    upscayl # upscale images
+    imaginer # image generation
 
-     wine
-     bottles
-     distrobox
-     docker
-
-     python3
-     python311Packages.pip
-     python311Packages.pyautogui
-     python311Packages.pillow
-     python311Packages.mouseinfo
+    gnome.gnome-weather # gnome weather
+    gnome.gnome-clocks # gnome clocks
+    gnome.gnome-calendar # gnome calendar
+    gnome.gnome-system-monitor # system monitor
+    gnome.gnome-font-viewer # managing fonts
+    gnome.file-roller # unzip
+    gnome.nautilus # web browser
+    gnome.gnome-calculator # calculator
+    gnome.gnome-tweaks # gnome tweaks
+    gnome.eog # gnome image viewer
+    gnome.gnome-disk-utility # gnome disk utility
+    gnome.geary # gnome mail client
+    gnome-text-editor # text editor
+    gnome.gnome-boxes # gnome virtualization tool
+    gnome-console # gnome terminal
+    evince # gnome document viewer
+    amberol # music player
+    clapper # video player
+    
+    gnomeExtensions.dash-to-dock # dock
+    gnomeExtensions.vitals # panel system monitor
+    gnomeExtensions.clipboard-indicator # clipboard
+    gnomeExtensions.caffeine # keep awage
+    gnomeExtensions.awesome-tiles # superior tiling
+    gnomeExtensions.tray-icons-reloaded # tray icons
+    gnomeExtensions.gsconnect # kde connect
+    gnomeExtensions.lock-keys # lock keys indicator
+    gnomeExtensions.color-picker # panel color picker
+    gnomeExtensions.desktop-icons-ng-ding # desktop icons
+    gnomeExtensions.tiling-assistant
+    
+    sassc
+    gtk-engine-murrine
+    gnome.gnome-themes-extra
+    adw-gtk3
+    
   ];
-
-  services.gnome.sushi.enable = true;
-
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "pgirardi" "patrickg" ];
+  
+  services.gnome.sushi.enable = true; # file manager pre visualization
+  
+  virtualisation.virtualbox.host.enable = true; # virtualbox configuration
+  users.extraGroups.vboxusers.members = [ "patrickg" ]; # virtualbox configuration
+  
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -226,7 +226,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
 
   # ZSH
   programs.zsh.enable = true;
@@ -237,15 +237,4 @@
   
   programs.zsh.syntaxHighlighting.enable = true;
   programs.zsh.autosuggestions.enable = true;
-  
 }
-
-  # TODO
-  # clickUp, Xampp, filtro de ruído, color picker, lorem ipsum, equalizador, cava, pdf, poe, extensões gnome, leitor de e-book, weather, e-mail, calendário, clock, nvidia pci, ver apps flathub
-  # ticktick
-  # notion-app-enhanced
-  # android-studio
-  # github-desktop
-  # floorp
-  # krita
-  # stremio
