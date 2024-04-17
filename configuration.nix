@@ -239,3 +239,13 @@
   programs.zsh.autosuggestions.enable = true;
   
 }
+
+  # TODO
+  # clickUp, Xampp, filtro de ruído, color picker, lorem ipsum, equalizador, cava, pdf, poe, extensões gnome, leitor de e-book, weather, e-mail, calendário, clock, nvidia pci, ver apps flathub
+  # ticktick
+  # notion-app-enhanced
+  # android-studio
+  # github-desktop
+  # floorp
+  # krita
+  # stremio
