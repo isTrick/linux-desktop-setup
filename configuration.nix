@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... }:
 
 {
@@ -14,20 +10,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Networking.
   networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
-  time.timeZone = "America/Sao_Paulo";
-
   # Select internationalisation properties.
+  time.timeZone = "America/Sao_Paulo";
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -47,18 +35,18 @@
   services.xserver.excludePackages = [ pkgs.xterm ];
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  # NVIDIA Proprietary Driver configuration.
   hardware.nvidia.prime.sync.enable = true;
   hardware.nvidia.modesetting.enable = true;
   
   hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
 
-  virtualisation.docker.enableNvidia = true;
-
   # Enable the Gnome Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.gnome.core-utilities.enable = false;
+  services.gnome.sushi.enable = true;
   environment.gnome.excludePackages = [ pkgs.gnome-tour ];
 
   # Configure keymap in X11
@@ -97,26 +85,9 @@
   users.users.patrickg = {
     isNormalUser = true;
     description = "Patrick Girardi";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "vboxusers" "docker" ];
     packages = with pkgs; [
-      anytype
-      ticktick
-      floorp # alternative web browser
-
-      android-studio
-      github-desktop
-    	
-      nerdfonts
-      cavalier # audio visualizer
-      
-      gnomeExtensions.material-shell # material shell
-      gnomeExtensions.blur-my-shell # blur effects
-      gnomeExtensions.coverflow-alt-tab # beautiful alt+tab
-      gnomeExtensions.burn-my-windows # windows animations
-      gnomeExtensions.desktop-cube # desktop effects
-      gnomeExtensions.rounded-window-corners
-      
-      bibata-cursors-translucent
+      # cavalier
     ];
   };
 
@@ -126,93 +97,106 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
     environment.systemPackages = with pkgs; [
-    git # versionating
-    wget # download things
-    wine # windows tools
-    bottles # manage wine
-    docker # manage containers
-    pciutils # config pci devices
-    protonvpn-gui # free vpn
-    
-    vlc # media player
-    vscode # versatile IDE
-    virtualbox # virtualization tool
-    brave # web-browser
-    fragments # torrents
-    gnome-frog # OCR tool
-    onlyoffice-bin # office
-    whatsapp-for-linux # whatsapp client
-    
-    spotify # music streaming
-    stremio # video streaming hub
-    foliate # e-book reader
-    
-    audacity # audio editor
-    kdenlive # video editor
-    krita # painting tool
-    obs-studio # screen recording
-    handbrake # video compressing
-    noisetorch # mic noise reduction
-    easyeffects # audio equalizer
-    upscayl # upscale images
-    imaginer # image generation
-
-    gnome.gnome-weather # gnome weather
-    gnome.gnome-clocks # gnome clocks
-    gnome.gnome-calendar # gnome calendar
-    gnome.gnome-system-monitor # system monitor
-    gnome.gnome-font-viewer # managing fonts
-    gnome.file-roller # unzip
-    gnome.nautilus # web browser
-    gnome.gnome-calculator # calculator
-    gnome.gnome-tweaks # gnome tweaks
-    gnome.eog # gnome image viewer
-    gnome.gnome-disk-utility # gnome disk utility
-    gnome.geary # gnome mail client
-    gnome-text-editor # text editor
-    gnome.gnome-boxes # gnome virtualization tool
-    gnome-console # gnome terminal
-    evince # gnome document viewer
-    amberol # music player
-    clapper # video player
-    
-    gnomeExtensions.dash-to-dock # dock
-    gnomeExtensions.vitals # panel system monitor
-    gnomeExtensions.clipboard-indicator # clipboard
-    gnomeExtensions.caffeine # keep awage
-    gnomeExtensions.awesome-tiles # superior tiling
-    gnomeExtensions.tray-icons-reloaded # tray icons
-    gnomeExtensions.gsconnect # kde connect
-    gnomeExtensions.lock-keys # lock keys indicator
-    gnomeExtensions.color-picker # panel color picker
-    gnomeExtensions.desktop-icons-ng-ding # desktop icons
-    gnomeExtensions.tiling-assistant
-    
-    sassc
-    gtk-engine-murrine
-    gnome.gnome-themes-extra
-    adw-gtk3
-    
+      # Terminal
+      vim 
+      wget
+      fastfetch
+      tree
+      tmux
+      vagrant
+      distrobox
+     
+      # Main
+      ferdium
+      brave
+      anytype
+      bitwarden-desktop
+      onlyoffice-bin
+      qbittorrent
+  
+      # Gnome GTK4
+      gnome.gnome-weather
+      gnome.gnome-clocks
+      gnome.gnome-calendar
+      gnome.geary
+      gnome.gnome-font-viewer
+      gnome.file-roller
+      gnome.gnome-calculator
+      gnome.nautilus
+      gnome.eog
+      gnome.gnome-disk-utility
+      gnome.gnome-boxes
+      gnome-console
+      gnome.gnome-tweaks
+      gnome-text-editor    
+      evince
+      gnome-frog
+      resources
+      g4music
+      celluloid
+      dialect
+      furtherance
+      
+      # Audiovisual
+      audacity
+      kdenlive
+      obs-studio
+      handbrake
+      losslesscut-bin
+      parabolic
+      openshot-qt
+  
+      # Image manipulation
+      krita
+      gthumb
+      upscayl
+  
+      # Other
+      stremio
+      easyeffects
+      cava
+      spotify
+      
+      # Wine
+      wine
+      bottles
+  
+      # Themes
+      nerdfonts
+      sassc
+      gtk-engine-murrine
+      gnome.gnome-themes-extra
+      adw-gtk3
+      yaru-theme
+      font-awesome
+  
+      # Gnome extensions
+      gnomeExtensions.dash-to-dock
+      gnomeExtensions.clipboard-indicator
+      gnomeExtensions.caffeine
+      gnomeExtensions.appindicator
+      gnomeExtensions.lock-keys
+      gnomeExtensions.tiling-assistant
+      gnomeExtensions.color-picker
+      gnomeExtensions.gnome-40-ui-improvements
+      gnomeExtensions.gsconnect
+  
+      # VSCode extensions
+      vscode-with-extensions
+      vscode-extensions.vscodevim.vim
+      vscode-extensions.ms-python.python
+      vscode-extensions.yzhang.markdown-all-in-one
+      vscode-extensions.jnoortheen.nix-ide
+  
+      # VIM plugins
+      vimPlugins.vim-vagrant
+      vimPlugins.python-mode
+  
+      # Python packages
+      python312
+      spotdl
+      python312Packages.numpy
   ];
-  
-  services.gnome.sushi.enable = true; # file manager pre visualization
-  
-  virtualisation.virtualbox.host.enable = true; # virtualbox configuration
-  users.extraGroups.vboxusers.members = [ "patrickg" ]; # virtualbox configuration
-  
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -220,13 +204,8 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  # NixOS Version.
+  system.stateVersion = "24.05";
 
   # ZSH
   programs.zsh.enable = true;
@@ -237,4 +216,34 @@
   
   programs.zsh.syntaxHighlighting.enable = true;
   programs.zsh.autosuggestions.enable = true;
+
+  # Libvirt Virtualization
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      runAsRoot = true;
+      swtpm.enable = true;
+      ovmf = {
+        enable = true;
+        packages = [(pkgs.OVMF.override {
+          secureBoot = true;
+          tpmSupport = true;
+        }).fd];
+      };
+    };
+  };
+  
+  # VMware
+  virtualisation.vmware.host.enable = true;
+  
+  # VBox
+  virtualisation.virtualbox.host.enable = true;
+  # virtualisation.virtualbox.host.enableKvm = true;
+  
+  # Virtmanager
+  programs.virt-manager.enable = true;
+  
+  # Docker
+  virtualisation.docker.enable = true;
 }
