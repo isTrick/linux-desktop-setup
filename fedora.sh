@@ -1,42 +1,21 @@
-###################################
-# post-install scripts for Fedora #
-###################################
+#!/bin/bash
 
 # remove random packages
-sudo dnf remove yelp gnome-maps mediawriter cheese gnome-tour rhythmbox simple-scan gnome-connections
+dnf remove yelp gnome-maps mediawriter cheese gnome-tour rhythmbox simple-scan gnome-connections
 
 # remove extensoes do sistema
-sudo dnf remove gnome-shell-extension-background-logo gnome-classic-session gnome-extensions-app
+dnf remove gnome-shell-extension-background-logo gnome-classic-session gnome-extensions-app
 
 # instala extensoes do gnome basicas
-sudo dnf install gnome-shell-extension-appindicator gnome-shell-extension-caffeine gnome-shell-extension-dash-to-dock gnome-shell-extension-user-theme
+dnf install gnome-shell-extension-appindicator gnome-shell-extension-caffeine gnome-shell-extension-dash-to-dock gnome-shell-extension-user-theme
 
 # instala apps basicos
-sudo dnf install google-chrome-stable gnome-tweaks nvidia-driver pycharm-community cava epiphany
+dnf install gnome-tweaks
 
-# instala alguns flatpaks
-flatpak install com.mattjakeman.ExtensionManager it.mijorus.gearlever com.raggesilver.BlackBox # configurações
-flatpak install de.haeckerfelix.Fragments com.github.tenderowl.frog com.github.finefindus.eyedropper # utilitários
-flatpak install com.Spotify.Client io.bassi.Amberol com.obsproject.Studio # mídia
-flatpak install com.todoist.Todoist org.gnome.Evolution # produtividade
-flatpak install org.ferdium.Ferdium io.github.mimbrero.WhatsAppDesktop com.vivaldi.Vivaldi com.protonvpn.www  # internet
-flatpak install io.podman_desktop.PodmanDesktop org.gnome.Builder # desenvolvimento
-
-# customizaçao basica dos temas
-
-## tema adw-gtk
-sudo dnf install adw-gtk3-theme
+# tema adw-gtk
+dnf install adw-gtk3-theme
 gsettings set org.gnome.desktop.interface gtk-theme "Adw-gtk3-dark"
 
-## cursor bibata translucent
-git clone https://github.com/Silicasandwhich/Bibata_Cursor_Translucent
-sudo ./Bibata_Cursor_Translucent/Installer_Bibata.sh
-gsettings set org.gnome.desktop.interface cursor-theme 'Bibata_Ghost'
-rm -r Bibata_Cursor_Translucent
-
-## tema de icones MoreWaita
-git clone https://github.com/somepaulo/MoreWaita.git
-sudo ./MoreWaita/install.sh
-gsettings set org.gnome.desktop.interface icon-theme 'MoreWaita'
-rm -r MoreWaita
-
+# TODO #
+# snaps setup
+# Yaru theme
